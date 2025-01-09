@@ -1,12 +1,14 @@
-import React from 'react'
-import GetData from "./components/GetData"
+import React from "react";
+import Incomes from "./components/Services/Incomes";
+import Expenses from "./components/Services/Expenses";
 
 const App = () => {
   return (
     <div>
-      <GetData/>
+      <Incomes />
+      <Expenses />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
