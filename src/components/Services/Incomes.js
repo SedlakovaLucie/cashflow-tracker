@@ -4,6 +4,8 @@ import { getIncomes, addData, updateData, deleteData } from "../data/Repository"
 const Incomes = () => {
   const [incomes, setIncomes] = useState([]);
   const [newAmount, setNewAmount] = useState("");
+  const [editing, setEditing] = useState(null); // ID příjmu, který se právě upravuje
+  const [updatedAmount, setUpdatedAmount] = useState(""); // Nová částka při úpravě
 
   // Načtení příjmů
   const fetchIncomes = async () => {
@@ -20,7 +22,7 @@ const Incomes = () => {
     if (!newAmount) return;
     try {
       await addData("income", { amount: parseFloat(newAmount) });
-      setNewAmount(""); // Vymaže vstupní pole
+      setNewAmount("");
       fetchIncomes();
     } catch (error) {
       console.error("Chyba při přidávání příjmu:", error);
@@ -28,9 +30,12 @@ const Incomes = () => {
   };
 
   // Aktualizace příjmu
-  const handleUpdateIncome = async (id, updatedAmount) => {
+  const handleUpdateIncome = async () => {
+    if (!updatedAmount || !editing) return;
     try {
-      await updateData("income", id, { amount: parseFloat(updatedAmount) });
+      await updateData("income", editing, { amount: parseFloat(updatedAmount) });
+      setEditing(null);
+      setUpdatedAmount("");
       fetchIncomes();
     } catch (error) {
       console.error("Chyba při aktualizaci příjmu:", error);
@@ -71,12 +76,28 @@ const Incomes = () => {
         {incomes.length > 0 ? (
           incomes.map((income) => (
             <div key={income.id} style={{ marginBottom: "20px" }}>
-              <p>Amount: {income.amount}</p>
-              <input
-                type="number"
-                placeholder="Nová částka"
-                onBlur={(e) => handleUpdateIncome(income.id, e.target.value)}
-              />
+              <p>
+                Amount:{" "}
+                {editing === income.id ? (
+                  <>
+                    <input
+                      type="number"
+                      placeholder="Nová částka"
+                      value={updatedAmount}
+                      onChange={(e) => setUpdatedAmount(e.target.value)}
+                    />
+                    <button onClick={handleUpdateIncome}>Potvrdit</button>
+                    <button onClick={() => setEditing(null)}>Zrušit</button>
+                  </>
+                ) : (
+                  <>
+                    {income.amount}{" "}
+                    <button onClick={() => setEditing(income.id)}>
+                      Upravit
+                    </button>
+                  </>
+                )}
+              </p>
               <button onClick={() => handleDeleteIncome(income.id)}>
                 Smazat
               </button>

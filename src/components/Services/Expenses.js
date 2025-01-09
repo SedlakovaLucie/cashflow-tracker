@@ -4,8 +4,9 @@ import { getExpenses, addData, updateData, deleteData } from "../data/Repository
 const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [newAmount, setNewAmount] = useState("");
+  const [editing, setEditing] = useState(null);
+  const [updatedAmount, setUpdatedAmount] = useState("");
 
-  // Načtení výdajů
   const fetchExpenses = async () => {
     try {
       const data = await getExpenses();
@@ -15,7 +16,6 @@ const Expenses = () => {
     }
   };
 
-  // Přidání výdaje
   const handleAddExpense = async () => {
     if (!newAmount) return;
     try {
@@ -27,17 +27,18 @@ const Expenses = () => {
     }
   };
 
-  // Aktualizace výdaje
-  const handleUpdateExpense = async (id, updatedAmount) => {
+  const handleUpdateExpense = async () => {
+    if (!updatedAmount || !editing) return;
     try {
-      await updateData("expense", id, { amount: parseFloat(updatedAmount) });
+      await updateData("expense", editing, { amount: parseFloat(updatedAmount) });
+      setEditing(null);
+      setUpdatedAmount("");
       fetchExpenses();
     } catch (error) {
       console.error("Chyba při aktualizaci výdaje:", error);
     }
   };
 
-  // Mazání výdaje
   const handleDeleteExpense = async (id) => {
     try {
       await deleteData("expense", id);
@@ -71,12 +72,28 @@ const Expenses = () => {
         {expenses.length > 0 ? (
           expenses.map((expense) => (
             <div key={expense.id} style={{ marginBottom: "20px" }}>
-              <p>Amount: {expense.amount}</p>
-              <input
-                type="number"
-                placeholder="Nová částka"
-                onBlur={(e) => handleUpdateExpense(expense.id, e.target.value)}
-              />
+              <p>
+                Amount:{" "}
+                {editing === expense.id ? (
+                  <>
+                    <input
+                      type="number"
+                      placeholder="Nová částka"
+                      value={updatedAmount}
+                      onChange={(e) => setUpdatedAmount(e.target.value)}
+                    />
+                    <button onClick={handleUpdateExpense}>Potvrdit</button>
+                    <button onClick={() => setEditing(null)}>Zrušit</button>
+                  </>
+                ) : (
+                  <>
+                    {expense.amount}{" "}
+                    <button onClick={() => setEditing(expense.id)}>
+                      Upravit
+                    </button>
+                  </>
+                )}
+              </p>
               <button onClick={() => handleDeleteExpense(expense.id)}>
                 Smazat
               </button>
