@@ -1,12 +1,19 @@
-import React from "react";
-import Incomes from "./components/Services/Incomes";
-import Expenses from "./components/Services/Expenses";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import Error from "./pages/Error";
+import MainLayout from "./pages/MainLayout";
 
 const App = () => {
   return (
     <div>
-      <Incomes />
-      <Expenses />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/*" element={<Error />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };
