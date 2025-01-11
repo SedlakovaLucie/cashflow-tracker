@@ -1,12 +1,10 @@
 import "./HomePage.css"
-import Incomes from "../components/Services/Expenses";
-import Expenses from "../components/Services/Incomes";
+import ExpensesAndIncomes from "../components/Services/ExpensesAndIncomes";
 
 const HomePage = () => {
   return (
     <div className="transactions-wrapper">
-      <Incomes />
-      <Expenses />
+      <ExpensesAndIncomes/>
     </div>
   );
 };
