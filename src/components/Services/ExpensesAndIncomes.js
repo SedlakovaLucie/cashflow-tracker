@@ -1,9 +1,9 @@
-import "./ExpensesAndIncomes.css";
-import { useState, useEffect } from "react";
-import { getExpenses, getIncomes, addData, updateData, deleteData } from "../data/Repository";
+import React, { useState, useEffect } from "react";
 import Balance from "./Balance";
 import Form from "./Form";
 import List from "./List";
+import { getExpenses, getIncomes, addData, updateData, deleteData } from "../data/Repository";
+import "./ExpensesAndIncomes.css";
 
 const ExpensesAndIncomes = () => {
   const [expenses, setExpenses] = useState([]);
@@ -15,26 +15,34 @@ const ExpensesAndIncomes = () => {
   }, []);
 
   const fetchExpenses = async () => {
-    const data = await getExpenses();
-    setExpenses(data);
+    try {
+      const data = await getExpenses();
+      setExpenses(data);
+    } catch (error) {
+      console.error("Chyba při načítání výdajů:", error);
+    }
   };
 
   const fetchIncomes = async () => {
-    const data = await getIncomes();
-    setIncomes(data);
+    try {
+      const data = await getIncomes();
+      setIncomes(data);
+    } catch (error) {
+      console.error("Chyba při načítání příjmů:", error);
+    }
   };
 
-  const handleAdd = async (type, item) => {
+  const handleAdd = async (type, newItem) => {
     try {
       if (type === "expense") {
-        await addData("expense", item);
+        await addData("expense", newItem);
         fetchExpenses();
       } else {
-        await addData("income", item);
+        await addData("income", newItem);
         fetchIncomes();
       }
     } catch (error) {
-      console.error("Error adding item:", error);
+      console.error("Chyba při přidávání položky:", error);
     }
   };
 
@@ -48,7 +56,7 @@ const ExpensesAndIncomes = () => {
         fetchIncomes();
       }
     } catch (error) {
-      console.error("Error updating item:", error);
+      console.error("Chyba při aktualizaci položky:", error);
     }
   };
 
@@ -57,12 +65,12 @@ const ExpensesAndIncomes = () => {
       if (type === "expense") {
         await deleteData("expense", id);
         fetchExpenses();
-      } else {
+      } else if (type === "income") {
         await deleteData("income", id);
         fetchIncomes();
       }
     } catch (error) {
-      console.error("Error deleting item:", error);
+      console.error("Chyba při mazání položky:", error);
     }
   };
 
@@ -82,13 +90,27 @@ const ExpensesAndIncomes = () => {
     <div className="expenses-incomes-container">
       <h1>Transakce</h1>
       <Balance balance={balance} totalExpenses={totalExpenses} totalIncomes={totalIncomes} />
+
+      {/* Formulář */}
       <Form onAdd={handleAdd} />
-      <List
-        incomes={incomes}
-        expenses={expenses}
-        onUpdate={handleUpdate}
-        onDelete={handleDelete}
-      />
+
+      {/* Seznam příjmů a výdajů */}
+      <div className="list-container">
+        <List
+          title="Příjmy"
+          items={incomes}
+          type="income"
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+        />
+        <List
+          title="Výdaje"
+          items={expenses}
+          type="expense"
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+        />
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import "./Form.css"
 import { useState } from "react";
 
 const Form = ({ onAdd }) => {

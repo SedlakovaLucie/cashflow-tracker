@@ -1,0 +1,15 @@
+.list-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .list {
+    flex: 1;
+    max-width: 48%;
+  }
+  
+  .list h2 {
+    text-align: center;
+  }
+  

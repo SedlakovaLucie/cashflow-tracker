@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
+import "./ListItem.css";
 
 const ListItem = ({ item, type, onUpdate, onDelete }) => {
   const { amount, description, create_date, id } = item;
@@ -20,7 +21,7 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
   };
 
   return (
-    <div className="list-item">
+    <div className={`list-item ${isEditing ? "editing" : ""}`}>
       {isEditing ? (
         <>
           <div>
@@ -43,7 +44,7 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
               className="form-input"
             />
           </div>
-          <div>
+          <div className="button-container">
             <button onClick={handleSave} className="save-button">
               Uložit
             </button>
@@ -59,7 +60,7 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
             <p>Popis: {description}</p>
             <p>Datum: {new Date(create_date).toLocaleDateString()}</p>
           </div>
-          <div>
+          <div className="button-container">
             <button onClick={() => setIsEditing(true)} className="edit-button">
               <FaPen />
             </button>
