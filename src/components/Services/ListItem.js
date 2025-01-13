@@ -56,7 +56,13 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
       ) : (
         <>
           <div>
-            <p>Částka: {amount} Kč</p>
+            <p>
+              Částka:{" "}
+              <span className={`amount ${type === "expense" ? "expense" : "income"}`}>
+                {type === "expense" ? `-` : ""}
+                {amount} Kč
+              </span>
+            </p>
             <p>Popis: {description}</p>
             <p>Datum: {new Date(create_date).toLocaleDateString()}</p>
           </div>

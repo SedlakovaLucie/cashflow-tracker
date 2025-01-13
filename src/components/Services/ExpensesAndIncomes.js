@@ -6,29 +6,24 @@ import { getExpenses, getIncomes, addData, updateData, deleteData } from "../dat
 import "./ExpensesAndIncomes.css";
 
 const ExpensesAndIncomes = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [incomes, setIncomes] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    fetchExpenses();
-    fetchIncomes();
+    fetchTransactions();
   }, []);
 
-  const fetchExpenses = async () => {
+  const fetchTransactions = async () => {
     try {
-      const data = await getExpenses();
-      setExpenses(data);
+      const expenses = await getExpenses();
+      const incomes = await getIncomes();
+      const allTransactions = [
+        ...expenses.map((expense) => ({ ...expense, type: "expense" })),
+        ...incomes.map((income) => ({ ...income, type: "income" })),
+      ]
+        .sort((a, b) => new Date(b.create_date) - new Date(a.create_date)); // Řazení od nejnovějších po nejstarší
+      setTransactions(allTransactions);
     } catch (error) {
-      console.error("Chyba při načítání výdajů:", error);
-    }
-  };
-
-  const fetchIncomes = async () => {
-    try {
-      const data = await getIncomes();
-      setIncomes(data);
-    } catch (error) {
-      console.error("Chyba při načítání příjmů:", error);
+      console.error("Chyba při načítání transakcí:", error);
     }
   };
 
@@ -36,13 +31,12 @@ const ExpensesAndIncomes = () => {
     try {
       if (type === "expense") {
         await addData("expense", newItem);
-        fetchExpenses();
       } else {
         await addData("income", newItem);
-        fetchIncomes();
       }
+      fetchTransactions();
     } catch (error) {
-      console.error("Chyba při přidávání položky:", error);
+      console.error("Chyba při přidávání transakce:", error);
     }
   };
 
@@ -50,13 +44,12 @@ const ExpensesAndIncomes = () => {
     try {
       if (type === "expense") {
         await updateData("expense", id, updatedItem);
-        fetchExpenses();
       } else {
         await updateData("income", id, updatedItem);
-        fetchIncomes();
       }
+      fetchTransactions();
     } catch (error) {
-      console.error("Chyba při aktualizaci položky:", error);
+      console.error("Chyba při aktualizaci transakce:", error);
     }
   };
 
@@ -64,19 +57,22 @@ const ExpensesAndIncomes = () => {
     try {
       if (type === "expense") {
         await deleteData("expense", id);
-        fetchExpenses();
       } else if (type === "income") {
         await deleteData("income", id);
-        fetchIncomes();
       }
+      fetchTransactions();
     } catch (error) {
-      console.error("Chyba při mazání položky:", error);
+      console.error("Chyba při mazání transakce:", error);
     }
   };
 
   const calculateBalance = () => {
-    const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-    const totalIncomes = incomes.reduce((sum, income) => sum + income.amount, 0);
+    const totalExpenses = transactions
+      .filter((t) => t.type === "expense")
+      .reduce((sum, t) => sum + t.amount, 0);
+    const totalIncomes = transactions
+      .filter((t) => t.type === "income")
+      .reduce((sum, t) => sum + t.amount, 0);
     return {
       totalExpenses,
       totalIncomes,
@@ -91,26 +87,9 @@ const ExpensesAndIncomes = () => {
       <h1>Transakce</h1>
       <Balance balance={balance} totalExpenses={totalExpenses} totalIncomes={totalIncomes} />
 
-      {/* Formulář */}
       <Form onAdd={handleAdd} />
 
-      {/* Seznam příjmů a výdajů */}
-      <div className="list-container">
-        <List
-          title="Příjmy"
-          items={incomes}
-          type="income"
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-        />
-        <List
-          title="Výdaje"
-          items={expenses}
-          type="expense"
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-        />
-      </div>
+      <List items={transactions} onUpdate={handleUpdate} onDelete={handleDelete} />
     </div>
   );
 };
