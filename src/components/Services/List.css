@@ -10,20 +10,20 @@
 }
 
 .pagination button {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+  padding: 10px 15px;
+  border: none;
+  background-color: var(--white);
   border-radius: 5px;
   cursor: pointer;
 }
 
 .pagination button.active {
-  background-color: blue;
-  color: white;
+  background-color: var(--paginationColor);
+  color: var(--white);
   border: none;
 }
 
 .pagination button:hover {
-  background-color: blue;
-  color: white;
+  background-color: var(--paginationColor);
+  color: var(--white);
 }

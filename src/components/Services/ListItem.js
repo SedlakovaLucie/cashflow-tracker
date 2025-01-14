@@ -24,18 +24,20 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
     <div className={`list-item ${isEditing ? "editing" : ""}`}>
       {isEditing ? (
         <>
-          <div>
+          <div className="edit-fields">
             <input
               type="number"
               value={editedAmount}
               onChange={(e) => setEditedAmount(e.target.value)}
               className="form-input"
+              placeholder="Částka"
             />
             <input
               type="text"
               value={editedDescription}
               onChange={(e) => setEditedDescription(e.target.value)}
               className="form-input"
+              placeholder="Popis"
             />
             <input
               type="date"
@@ -68,10 +70,10 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
           </div>
           <div className="button-container">
             <button onClick={() => setIsEditing(true)} className="edit-button">
-              <FaPen />
+              <FaPen className="edit-icon" />
             </button>
             <button onClick={() => onDelete(type, id)} className="delete-button">
-              <MdDelete />
+              <MdDelete className="delete-icon" />
             </button>
           </div>
         </>

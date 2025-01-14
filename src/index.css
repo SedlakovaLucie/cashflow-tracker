@@ -1,3 +1,4 @@
+
 /* CSS reset */
 
 * {
@@ -19,10 +20,10 @@
   /* Global */
   
   html {
-    font-family: "Poppins", serif;
+    font-family: "Atomic Age", serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 18px;
+    font-size: 20px;
     margin: auto;
     min-height: 100%;
   }
@@ -33,7 +34,7 @@
   }
   
   button, input, select, textarea {
-    font-family: "Poppins", serif;
+    font-family: "Atomic Age", serif;
   }
 
   h1, h2, h3 {

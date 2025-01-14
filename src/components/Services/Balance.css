@@ -1,0 +1,29 @@
+.balance-container {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 20px 30px;
+  margin-bottom: 40px;
+  text-align: center;
+  font-size: 1.1rem;
+  background-color: var(--balanceItemGreen);
+  box-shadow: var(--boxShadow);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.negative-border {
+  background-color: var(--balanceItemGreen);
+}
+
+.balance-container p {
+  margin: 5px 0;
+}
+
+.balance-container p:first-child {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: var(--green);
+}
+
+.balance-container.negative p:first-child {
+  color: var(--red);
+}
