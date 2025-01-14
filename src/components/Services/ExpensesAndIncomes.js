@@ -2,11 +2,19 @@ import React, { useState, useEffect } from "react";
 import Balance from "./Balance";
 import Form from "./Form";
 import List from "./List";
-import { getExpenses, getIncomes, addData, updateData, deleteData } from "../data/Repository";
+import Filter from "./Filter";
+import {
+  getExpenses,
+  getIncomes,
+  addData,
+  updateData,
+  deleteData,
+} from "../data/Repository";
 import "./ExpensesAndIncomes.css";
 
 const ExpensesAndIncomes = () => {
   const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
 
   useEffect(() => {
     fetchTransactions();
@@ -22,6 +30,7 @@ const ExpensesAndIncomes = () => {
       ]
         .sort((a, b) => new Date(b.create_date) - new Date(a.create_date)); // Řazení od nejnovějších po nejstarší
       setTransactions(allTransactions);
+      setFilteredTransactions(allTransactions);
     } catch (error) {
       console.error("Chyba při načítání transakcí:", error);
     }
@@ -80,16 +89,37 @@ const ExpensesAndIncomes = () => {
     };
   };
 
+  const handleFilter = (startDate, endDate) => {
+    const filtered = transactions.filter((t) => {
+      const date = new Date(t.create_date);
+      return (
+        (!startDate || date >= new Date(startDate)) &&
+        (!endDate || date <= new Date(endDate))
+      );
+    });
+    setFilteredTransactions(filtered);
+  };
+
   const { totalExpenses, totalIncomes, balance } = calculateBalance();
 
   return (
     <div className="expenses-incomes-container">
       <h1>Transakce</h1>
-      <Balance balance={balance} totalExpenses={totalExpenses} totalIncomes={totalIncomes} />
+      <Balance
+        balance={balance}
+        totalExpenses={totalExpenses}
+        totalIncomes={totalIncomes}
+      />
 
       <Form onAdd={handleAdd} />
 
-      <List items={transactions} onUpdate={handleUpdate} onDelete={handleDelete} />
+      <Filter onFilter={handleFilter} />
+
+      <List
+        items={filteredTransactions}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
+      />
     </div>
   );
 };
