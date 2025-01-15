@@ -1,8 +1,15 @@
 .form-container {
   display: flex;
+  justify-content: end;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
 }
 
 .form-input,
@@ -13,18 +20,32 @@
   border-radius: 5px;
   flex: 1;
   height: 42px;
-  max-width: 300px;
+  max-height: 42px;
+  max-width: 100%;
   box-shadow: var(--boxShadow);
+}
+
+.error-border {
+  border-color: 2px solid var(--red);
+  box-shadow: 0 0 5px var(--red);
+  outline: none;
+}
+
+.error-message {
+  font-size: 0.7rem;
+  color: var(--red);
+  margin-top: 5px;
 }
 
 .form-button {
   padding: 0 15px;
-  background-color: var( --paginationColor);
+  background-color: var(--paginationColor);
   color: var(--white);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   height: 42px;
+  max-height: 42px;
 }
 
 .form-button:hover {

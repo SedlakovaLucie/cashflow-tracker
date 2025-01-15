@@ -9,3 +9,11 @@
   font-size: 2rem;
   padding-bottom: 20px;
 }
+
+
+
+@media (max-width: 768px) {
+  .expenses-incomes-container {
+    padding: 40px 20px;
+  }
+}

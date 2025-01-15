@@ -20,7 +20,7 @@
   /* Global */
   
   html {
-    font-family: "Atomic Age", serif;
+    font-family: "Roboto Condensed", serif;
     font-weight: 400;
     font-style: normal;
     font-size: 20px;
@@ -34,9 +34,15 @@
   }
   
   button, input, select, textarea {
-    font-family: "Atomic Age", serif;
+    font-family: "Roboto Condensed", serif;
   }
 
   h1, h2, h3 {
     font-weight: 500; 
+  }
+
+  @media (max-width: 768px) {
+    html {
+      font-size: 17px;
+    }
   }

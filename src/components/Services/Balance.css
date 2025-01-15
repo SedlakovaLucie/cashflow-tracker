@@ -11,7 +11,7 @@
 }
 
 .negative-border {
-  background-color: var(--balanceItemGreen);
+  background-color: var(--balanceItemRed);
 }
 
 .balance-container p {

@@ -1,3 +1,10 @@
 .navbar-wrapper {
-    background-color: aqua;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    font-weight: 500;
+}
+
+.logo-icon {
+    margin-right: 5px;
 }

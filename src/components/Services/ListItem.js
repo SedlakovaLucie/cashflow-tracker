@@ -6,6 +6,7 @@ import "./ListItem.css";
 const ListItem = ({ item, type, onUpdate, onDelete }) => {
   const { amount, description, create_date, id } = item;
   const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editedAmount, setEditedAmount] = useState(amount);
   const [editedDescription, setEditedDescription] = useState(description);
   const [editedDate, setEditedDate] = useState(new Date(create_date).toISOString().split("T")[0]);
@@ -18,6 +19,11 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
     };
     onUpdate(type, id, updatedItem);
     setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    onDelete(type, id);
+    setIsModalOpen(false);
   };
 
   return (
@@ -72,9 +78,22 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
             <button onClick={() => setIsEditing(true)} className="edit-button">
               <FaPen className="edit-icon" />
             </button>
-            <button onClick={() => onDelete(type, id)} className="delete-button">
+            <button onClick={() => setIsModalOpen((prev) => !prev)} className="delete-button">
               <MdDelete className="delete-icon" />
             </button>
+            {isModalOpen && (
+              <div className="modal-small">
+                <p>Opravdu chcete smazat tuto položku?</p>
+                <div className="modal-buttons">
+                  <button onClick={handleDelete} className="modal-confirm">
+                    Ano
+                  </button>
+                  <button onClick={() => setIsModalOpen(false)} className="modal-cancel">
+                    Zrušit
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </>
       )}

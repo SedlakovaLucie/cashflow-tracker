@@ -1,0 +1,36 @@
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--backgroundColor);
+    color: var(--fontColor);
+    padding: 20px;
+    margin: 200px 0px;
+  }
+  
+  .error-container h1 {
+    font-size: 2.5rem;
+  }
+  
+  .error-container p {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  
+  .error-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: var(--white);
+    background-color: var(--paginationColor);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: var(--boxShadow);
+  }
+  
+  .error-button:hover {
+    background-color: var(--paginationHover);
+  }
+  

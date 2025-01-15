@@ -13,6 +13,13 @@ const Filter = ({ onFilter }) => {
     setIsOpen(false);
   };
 
+  const handleReset = () => {
+    setStartDate("");
+    setEndDate("");
+    onFilter("", "");
+    setIsOpen(false);
+  };
+
   const handleClickOutside = (event) => {
     if (filterRef.current && !filterRef.current.contains(event.target)) {
       setIsOpen(false);
@@ -55,7 +62,12 @@ const Filter = ({ onFilter }) => {
               />
             </div>
           </div>
-          <button onClick={handleFilter}>Filtruj</button>
+          <div className="filter-buttons">
+            <button onClick={handleFilter}>Filtruj</button>
+            <button onClick={handleReset} className="reset-button">
+              Zrušit
+            </button>
+          </div>
         </div>
       )}
     </div>
