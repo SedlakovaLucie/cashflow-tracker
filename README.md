@@ -2,8 +2,8 @@
 ## Popis
 Aplikace umožňuje zaznamenávání příjmů a výdajů, jejich filtrování, editaci, odstranění a další funkce. Data jsou uložena a spravována prostřednictvím databáze Firebase. 
 
-**Live Demo:**  
-https://sunandstorm.netlify.app
+**Live Demo:** 
+https://expense-log-app.netlify.app
 
 ## To Do
 - [ ] Přidat graf pro vizualizaci příjmů a výdajů
@@ -17,7 +17,7 @@ Pro spuštění této React aplikace je potřeba mít nainstalovaný Git a Node.
 https://github.com/SedlakovaLucie/cashflow-tracker.git
 
 # Vstupte do vytvořené složky
-cd weather_ap
+cd cashflow-tracker
 
 # Nainstalujte
 npm install
@@ -26,5 +26,6 @@ npm install
 npm start
 ```
 ## Screenshots
-<img alt="desktop" src="./screenshots/desktop.png">
-<img alt="mobile" src="./screenshots/mobile.png">
+<img width="1304" alt="desktop" src="./screenshots/desktop.png">
+<img width="359" alt="mobile" src="./screenshots/mobile.png">
+
