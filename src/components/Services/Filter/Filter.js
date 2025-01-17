@@ -63,10 +63,10 @@ const Filter = ({ onFilter }) => {
             </div>
           </div>
           <div className="filter-buttons">
-            <button onClick={handleFilter}>Filtruj</button>
             <button onClick={handleReset} className="reset-button">
               Zrušit
             </button>
+            <button onClick={handleFilter}>Filtruj</button>
           </div>
         </div>
       )}

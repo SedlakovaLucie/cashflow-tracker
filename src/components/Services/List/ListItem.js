@@ -9,7 +9,9 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editedAmount, setEditedAmount] = useState(amount);
   const [editedDescription, setEditedDescription] = useState(description);
-  const [editedDate, setEditedDate] = useState(new Date(create_date).toISOString().split("T")[0]);
+  const [editedDate, setEditedDate] = useState(
+    new Date(create_date).toISOString().split("T")[0]
+  );
 
   const handleSave = () => {
     const updatedItem = {
@@ -53,11 +55,14 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
             />
           </div>
           <div className="button-container">
+            <button
+              onClick={() => setIsEditing(false)}
+              className="cancel-button"
+            >
+              Zrušit
+            </button>
             <button onClick={handleSave} className="save-button">
               Uložit
-            </button>
-            <button onClick={() => setIsEditing(false)} className="cancel-button">
-              Zrušit
             </button>
           </div>
         </>
@@ -66,7 +71,11 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
           <div>
             <p>
               Částka:{" "}
-              <span className={`amount ${type === "expense" ? "expense" : "income"}`}>
+              <span
+                className={`amount ${
+                  type === "expense" ? "expense" : "income"
+                }`}
+              >
                 {type === "expense" ? `-` : ""}
                 {amount} Kč
               </span>
@@ -78,18 +87,24 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
             <button onClick={() => setIsEditing(true)} className="edit-button">
               <FaPen className="edit-icon" />
             </button>
-            <button onClick={() => setIsModalOpen((prev) => !prev)} className="delete-button">
+            <button
+              onClick={() => setIsModalOpen((prev) => !prev)}
+              className="delete-button"
+            >
               <MdDelete className="delete-icon" />
             </button>
             {isModalOpen && (
               <div className="modal-small">
                 <p>Opravdu chcete smazat tuto položku?</p>
                 <div className="modal-buttons">
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    className="modal-cancel"
+                  >
+                    Zrušit
+                  </button>
                   <button onClick={handleDelete} className="modal-confirm">
                     Ano
-                  </button>
-                  <button onClick={() => setIsModalOpen(false)} className="modal-cancel">
-                    Zrušit
                   </button>
                 </div>
               </div>

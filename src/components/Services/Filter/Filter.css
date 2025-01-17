@@ -23,14 +23,13 @@
 
 .filter-container {
   position: absolute;
-  top: 40px;
+  top: 25px;
   right: 10px;
   background-color: var(--listItemColor);
-  padding: 20px;
+  padding: 30px;
   border-radius: 5px;
   box-shadow: var(--boxShadow);
   z-index: 100;
-  width: 300px;
 }
 
 .filter-container h3 {
@@ -41,6 +40,7 @@
 
 .filter-fields {
   display: flex;
+  justify-content: end;
   gap: 10px;
   margin-bottom: 15px;
 }

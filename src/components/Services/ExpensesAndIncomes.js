@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Balance from "./Balance";
-import Form from "./Form";
-import List from "./List";
-import Filter from "./Filter";
+import Balance from "./Balance/Balance";
+import Form from "./Form/Form";
+import List from "./List/List";
+import Filter from "./Filter/Filter";
 import {
   getExpenses,
   getIncomes,
