@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ListItem from "./ListItem";
 import "./List.css";
+import { PiEmptyBold } from "react-icons/pi";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -18,16 +19,23 @@ const List = ({ items, onUpdate, onDelete }) => {
 
   return (
     <div className="list">
-      {visibleItems.map((item) => (
-        <ListItem
-          key={item.id}
-          item={item}
-          type={item.type}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
-        />
-      ))}
-      {totalPages > 1 && (
+      {visibleItems.length > 0 ? (
+        visibleItems.map((item) => (
+          <ListItem
+            key={item.id}
+            item={item}
+            type={item.type}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
+        ))
+      ) : (
+        <div className="empty-message">
+          <PiEmptyBold />
+          <p>Ve zvoleném období nejsou žádné záznamy.</p>
+        </div>
+      )}
+      {totalPages > 1 && visibleItems.length > 0 && (
         <div className="pagination">
           {Array.from({ length: totalPages }, (_, i) => (
             <button

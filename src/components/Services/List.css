@@ -27,3 +27,11 @@
   background-color: var(--paginationColor);
   color: var(--white);
 }
+
+.empty-message {
+  text-align: center;
+  margin-top: 20px;
+  color: var(--fontColor);
+  font-size: 1.2rem;
+}
+
