@@ -1,72 +1,94 @@
 import "./Form.css";
-import { useState } from "react";
+import { useReducer } from "react";
+
+const actionTypes = {
+  UPDATE_FIELD: "UPDATE_FIELD",
+  SET_ERRORS: "SET_ERRORS",
+  RESET_FORM: "RESET_FORM",
+};
+
+// Reducer
+const reducer = (state, action) => {
+  switch (action.type) {
+    case actionTypes.UPDATE_FIELD:
+      return { ...state, [action.field]: action.value };
+
+    case actionTypes.SET_ERRORS:
+      return { ...state, errors: action.errors };
+
+    case actionTypes.RESET_FORM:
+      return {
+        newAmount: "",
+        newDescription: "",
+        newDate: "",
+        selectedType: "expense",
+        errors: { amount: "", description: "", date: "" },
+      };
+
+    default:
+      return state;
+  }
+};
 
 const Form = ({ onAdd }) => {
-  const [newAmount, setNewAmount] = useState("");
-  const [newDescription, setNewDescription] = useState("");
-  const [newDate, setNewDate] = useState("");
-  const [selectedType, setSelectedType] = useState("expense");
-
-  const [errors, setErrors] = useState({
-    amount: "",
-    description: "",
-    date: "",
+  // Reducer default
+  const [state, dispatch] = useReducer(reducer, {
+    newAmount: "",
+    newDescription: "",
+    newDate: "",
+    selectedType: "expense",
+    errors: { amount: "", description: "", date: "" },
   });
 
   const handleSubmit = () => {
     let hasError = false;
-    const newErrors = {
-      amount: "",
-      description: "",
-      date: "",
-    };
+    const newErrors = { amount: "", description: "", date: "" };
 
-    if (!newAmount) {
+    if (!state.newAmount) {
       newErrors.amount = "Částka je povinná";
       hasError = true;
-    } else if (isNaN(newAmount)) {
+    } else if (isNaN(state.newAmount)) {
       newErrors.amount = "Částka musí být číslo";
       hasError = true;
     }
 
-    if (!newDescription) {
+    if (!state.newDescription) {
       newErrors.description = "Popis je povinný";
       hasError = true;
     }
 
-    if (!newDate) {
+    if (!state.newDate) {
       newErrors.date = "Datum je povinné";
       hasError = true;
     }
 
     if (hasError) {
-      setErrors(newErrors);
+      dispatch({ type: actionTypes.SET_ERRORS, errors: newErrors });
       return;
     }
 
     const newItem = {
-      amount: parseFloat(newAmount),
-      description: newDescription,
-      create_date: new Date(newDate).toISOString(),
+      amount: parseFloat(state.newAmount),
+      description: state.newDescription,
+      create_date: new Date(state.newDate).toISOString(),
     };
 
-    onAdd(selectedType, newItem);
+    onAdd(state.selectedType, newItem);
 
-    setNewAmount("");
-    setNewDescription("");
-    setNewDate("");
-    setErrors({
-      amount: "",
-      description: "",
-      date: "",
-    });
+    dispatch({ type: actionTypes.RESET_FORM });
   };
 
   return (
     <div className="form-container">
       <select
-        value={selectedType}
-        onChange={(e) => setSelectedType(e.target.value)}
+        value={state.selectedType}
+        onChange={(e) =>
+          dispatch({
+            type: actionTypes.UPDATE_FIELD,
+            field: "selectedType",
+            value: e.target.value,
+          })
+        }
         className="form-select"
       >
         <option value="expense">Výdej</option>
@@ -77,32 +99,50 @@ const Form = ({ onAdd }) => {
         <input
           type="number"
           placeholder="Zadejte částku"
-          value={newAmount}
-          onChange={(e) => setNewAmount(e.target.value)}
-          className={`form-input ${errors.amount ? "error-border" : ""}`}
+          value={state.newAmount}
+          onChange={(e) =>
+            dispatch({
+              type: actionTypes.UPDATE_FIELD,
+              field: "newAmount",
+              value: e.target.value,
+            })
+          }
+          className={`form-input ${state.errors.amount ? "error-border" : ""}`}
         />
-        {errors.amount && <p className="error-message">{errors.amount}</p>}
+        {state.errors.amount && <p className="error-message">{state.errors.amount}</p>}
       </div>
 
       <div className="form-field">
         <input
           type="text"
           placeholder="Zadejte popis"
-          value={newDescription}
-          onChange={(e) => setNewDescription(e.target.value)}
-          className={`form-input ${errors.description ? "error-border" : ""}`}
+          value={state.newDescription}
+          onChange={(e) =>
+            dispatch({
+              type: actionTypes.UPDATE_FIELD,
+              field: "newDescription",
+              value: e.target.value,
+            })
+          }
+          className={`form-input ${state.errors.description ? "error-border" : ""}`}
         />
-        {errors.description && <p className="error-message">{errors.description}</p>}
+        {state.errors.description && <p className="error-message">{state.errors.description}</p>}
       </div>
 
       <div className="form-field">
         <input
           type="date"
-          value={newDate}
-          onChange={(e) => setNewDate(e.target.value)}
-          className={`form-input ${errors.date ? "error-border" : ""}`}
+          value={state.newDate}
+          onChange={(e) =>
+            dispatch({
+              type: actionTypes.UPDATE_FIELD,
+              field: "newDate",
+              value: e.target.value,
+            })
+          }
+          className={`form-input ${state.errors.date ? "error-border" : ""}`}
         />
-        {errors.date && <p className="error-message">{errors.date}</p>}
+        {state.errors.date && <p className="error-message">{state.errors.date}</p>}
       </div>
 
       <button onClick={handleSubmit} className="form-button">
