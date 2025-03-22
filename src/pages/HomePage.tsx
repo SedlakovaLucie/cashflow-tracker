@@ -1,7 +1,7 @@
 import "./HomePage.css"
 import ExpensesAndIncomes from "../components/Services/ExpensesAndIncomes";
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   return (
     <div className="transactions-wrapper">
       <ExpensesAndIncomes/>

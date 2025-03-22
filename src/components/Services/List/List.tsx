@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import ListItem from "./ListItem";
 import "./List.css";
 import { PiEmptyBold } from "react-icons/pi";
+import {Transaction, NewTransaction, ListProps} from "../../../types"
 
 const ITEMS_PER_PAGE = 10;
 
-const List = ({ items, onUpdate, onDelete }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const List: React.FC<ListProps> = ({ items, onUpdate, onDelete }) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
@@ -35,6 +36,7 @@ const List = ({ items, onUpdate, onDelete }) => {
           <p>Ve zvoleném období nejsou žádné záznamy.</p>
         </div>
       )}
+
       {totalPages > 1 && visibleItems.length > 0 && (
         <div className="pagination">
           {Array.from({ length: totalPages }, (_, i) => (

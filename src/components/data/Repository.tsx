@@ -7,14 +7,18 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
+import {
+  NewTransaction,
+  TransactionFromFirestore,
+} from "../../types";
 
-// Funkce pro načtení příjmů
-export const getIncomes = async () => {
+// Načtení příjmů
+export const getIncomes = async (): Promise<TransactionFromFirestore[]> => {
   try {
     const incomeCollectionRef = collection(db, "income");
     const data = await getDocs(incomeCollectionRef);
     return data.docs.map((doc) => ({
-      ...doc.data(),
+      ...(doc.data() as NewTransaction),
       id: doc.id,
     }));
   } catch (error) {
@@ -23,13 +27,13 @@ export const getIncomes = async () => {
   }
 };
 
-// Funkce pro načtení výdajů
-export const getExpenses = async () => {
+// Načtení výdajů
+export const getExpenses = async (): Promise<TransactionFromFirestore[]> => {
   try {
     const expenseCollectionRef = collection(db, "expense");
     const data = await getDocs(expenseCollectionRef);
     return data.docs.map((doc) => ({
-      ...doc.data(),
+      ...(doc.data() as NewTransaction),
       id: doc.id,
     }));
   } catch (error) {
@@ -38,8 +42,11 @@ export const getExpenses = async () => {
   }
 };
 
-// Funkce pro přidání dat
-export const addData = async (collectionName, newData) => {
+// Přidání záznamu
+export const addData = async (
+  collectionName: "income" | "expense",
+  newData: NewTransaction
+): Promise<void> => {
   try {
     const collectionRef = collection(db, collectionName);
     await addDoc(collectionRef, newData);
@@ -49,8 +56,12 @@ export const addData = async (collectionName, newData) => {
   }
 };
 
-// Funkce pro aktualizaci dat
-export const updateData = async (collectionName, docId, updatedData) => {
+// Aktualizace záznamu
+export const updateData = async (
+  collectionName: "income" | "expense",
+  docId: string,
+  updatedData: NewTransaction
+): Promise<void> => {
   try {
     const docRef = doc(db, collectionName, docId);
     await updateDoc(docRef, updatedData);
@@ -60,8 +71,11 @@ export const updateData = async (collectionName, docId, updatedData) => {
   }
 };
 
-// Funkce pro mazání dat
-export const deleteData = async (collectionName, docId) => {
+// Mazání záznamu
+export const deleteData = async (
+  collectionName: "income" | "expense",
+  docId: string
+): Promise<void> => {
   try {
     const docRef = doc(db, collectionName, docId);
     await deleteDoc(docRef);

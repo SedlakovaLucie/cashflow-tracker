@@ -1,22 +1,23 @@
 import "./Form.css";
-import { useReducer } from "react";
+import { useReducer, ChangeEvent } from "react";
+import {FormProps, TransactionItem, FormState, FormAction} from "../../../types"
 
 const actionTypes = {
   UPDATE_FIELD: "UPDATE_FIELD",
   SET_ERRORS: "SET_ERRORS",
   RESET_FORM: "RESET_FORM",
-};
+} as const;
 
 // Reducer
-const reducer = (state, action) => {
+const reducer = (state: FormState, action: FormAction): FormState => {
   switch (action.type) {
-    case actionTypes.UPDATE_FIELD:
+    case "UPDATE_FIELD":
       return { ...state, [action.field]: action.value };
 
-    case actionTypes.SET_ERRORS:
+    case "SET_ERRORS":
       return { ...state, errors: action.errors };
 
-    case actionTypes.RESET_FORM:
+    case "RESET_FORM":
       return {
         newAmount: "",
         newDescription: "",
@@ -30,8 +31,7 @@ const reducer = (state, action) => {
   }
 };
 
-const Form = ({ onAdd }) => {
-  // Reducer default
+const Form: React.FC<FormProps> = ({ onAdd }) => {
   const [state, dispatch] = useReducer(reducer, {
     newAmount: "",
     newDescription: "",
@@ -47,7 +47,7 @@ const Form = ({ onAdd }) => {
     if (!state.newAmount) {
       newErrors.amount = "Částka je povinná";
       hasError = true;
-    } else if (isNaN(state.newAmount)) {
+    } else if (isNaN(Number(state.newAmount))) {
       newErrors.amount = "Částka musí být číslo";
       hasError = true;
     }
@@ -67,14 +67,13 @@ const Form = ({ onAdd }) => {
       return;
     }
 
-    const newItem = {
+    const newItem: TransactionItem = {
       amount: parseFloat(state.newAmount),
       description: state.newDescription,
       create_date: new Date(state.newDate).toISOString(),
     };
 
     onAdd(state.selectedType, newItem);
-
     dispatch({ type: actionTypes.RESET_FORM });
   };
 
@@ -82,7 +81,7 @@ const Form = ({ onAdd }) => {
     <div className="form-container">
       <select
         value={state.selectedType}
-        onChange={(e) =>
+        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
           dispatch({
             type: actionTypes.UPDATE_FIELD,
             field: "selectedType",
@@ -100,7 +99,7 @@ const Form = ({ onAdd }) => {
           type="number"
           placeholder="Zadejte částku"
           value={state.newAmount}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             dispatch({
               type: actionTypes.UPDATE_FIELD,
               field: "newAmount",
@@ -109,7 +108,9 @@ const Form = ({ onAdd }) => {
           }
           className={`form-input ${state.errors.amount ? "error-border" : ""}`}
         />
-        {state.errors.amount && <p className="error-message">{state.errors.amount}</p>}
+        {state.errors.amount && (
+          <p className="error-message">{state.errors.amount}</p>
+        )}
       </div>
 
       <div className="form-field">
@@ -117,7 +118,7 @@ const Form = ({ onAdd }) => {
           type="text"
           placeholder="Zadejte popis"
           value={state.newDescription}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             dispatch({
               type: actionTypes.UPDATE_FIELD,
               field: "newDescription",
@@ -126,14 +127,16 @@ const Form = ({ onAdd }) => {
           }
           className={`form-input ${state.errors.description ? "error-border" : ""}`}
         />
-        {state.errors.description && <p className="error-message">{state.errors.description}</p>}
+        {state.errors.description && (
+          <p className="error-message">{state.errors.description}</p>
+        )}
       </div>
 
       <div className="form-field">
         <input
           type="date"
           value={state.newDate}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             dispatch({
               type: actionTypes.UPDATE_FIELD,
               field: "newDate",
@@ -142,7 +145,9 @@ const Form = ({ onAdd }) => {
           }
           className={`form-input ${state.errors.date ? "error-border" : ""}`}
         />
-        {state.errors.date && <p className="error-message">{state.errors.date}</p>}
+        {state.errors.date && (
+          <p className="error-message">{state.errors.date}</p>
+        )}
       </div>
 
       <button onClick={handleSubmit} className="form-button">

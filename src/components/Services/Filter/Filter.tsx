@@ -1,27 +1,17 @@
 import "./Filter.css";
 import React, { useState, useEffect, useRef } from "react";
 import { FaFilter } from "react-icons/fa";
+import {FilterProps} from "../../../types"
 
-const Filter = ({ onFilter }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const filterRef = useRef(null);
+const Filter: React.FC<FilterProps> = ({ onFilter }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
-  const handleFilter = () => {
-    onFilter(startDate, endDate);
-    setIsOpen(false);
-  };
+  const filterRef = useRef<HTMLDivElement | null>(null);
 
-  const handleReset = () => {
-    setStartDate("");
-    setEndDate("");
-    onFilter("", "");
-    setIsOpen(false);
-  };
-
-  const handleClickOutside = (event) => {
-    if (filterRef.current && !filterRef.current.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (filterRef.current && event.target instanceof Node && !filterRef.current.contains(event.target)) {
       setIsOpen(false);
     }
   };
@@ -36,10 +26,7 @@ const Filter = ({ onFilter }) => {
   return (
     <div className="filter-block" ref={filterRef}>
       <div className="filter-header">
-        <FaFilter
-          className="filter-icon"
-          onClick={() => setIsOpen((prev) => !prev)}
-        />
+        <FaFilter className="filter-icon" onClick={() => setIsOpen((prev) => !prev)} />
       </div>
       {isOpen && (
         <div className="filter-container">
@@ -63,10 +50,12 @@ const Filter = ({ onFilter }) => {
             </div>
           </div>
           <div className="filter-buttons">
-            <button onClick={handleReset} className="reset-button">
+            <button onClick={() => { setStartDate(""); setEndDate(""); onFilter("", ""); setIsOpen(false); }} className="reset-button">
               Zrušit
             </button>
-            <button onClick={handleFilter}>Filtruj</button>
+            <button onClick={() => { onFilter(startDate, endDate); setIsOpen(false); }}>
+              Filtruj
+            </button>
           </div>
         </div>
       )}

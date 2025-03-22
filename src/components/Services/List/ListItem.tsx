@@ -1,53 +1,68 @@
-import { useReducer } from "react";
+import { useReducer, ChangeEvent } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
 import "./ListItem.css";
+import {Transaction, NewTransaction, ListItemProps} from "../../../types"
 
-const actionTypes = {
-  TOGGLE_EDIT: "TOGGLE_EDIT",
-  TOGGLE_MODAL: "TOGGLE_MODAL",
-  UPDATE_FIELD: "UPDATE_FIELD",
+type State = {
+  isEditing: boolean;
+  isModalOpen: boolean;
+  editedAmount: string;
+  editedDescription: string;
+  editedDate: string;
 };
 
-// Reducer
-const reducer = (state, action) => {
+type Action =
+  | { type: "TOGGLE_EDIT" }
+  | { type: "TOGGLE_MODAL" }
+  | {
+      type: "UPDATE_FIELD";
+      field: keyof Omit<State, "isEditing" | "isModalOpen">;
+      value: string;
+    };
+
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case actionTypes.TOGGLE_EDIT:
+    case "TOGGLE_EDIT":
       return { ...state, isEditing: !state.isEditing };
-    case actionTypes.TOGGLE_MODAL:
+    case "TOGGLE_MODAL":
       return { ...state, isModalOpen: !state.isModalOpen };
-    case actionTypes.UPDATE_FIELD:
+    case "UPDATE_FIELD":
       return { ...state, [action.field]: action.value };
     default:
       return state;
   }
 };
 
-const ListItem = ({ item, type, onUpdate, onDelete }) => {
+const ListItem: React.FC<ListItemProps> = ({
+  item,
+  type,
+  onUpdate,
+  onDelete,
+}) => {
   const { amount, description, create_date, id } = item;
 
-  // Reducer default
   const [state, dispatch] = useReducer(reducer, {
     isEditing: false,
     isModalOpen: false,
-    editedAmount: amount,
+    editedAmount: amount.toString(),
     editedDescription: description,
     editedDate: new Date(create_date).toISOString().split("T")[0],
   });
 
   const handleSave = () => {
-    const updatedItem = {
+    const updatedItem: NewTransaction = {
       amount: parseFloat(state.editedAmount),
       description: state.editedDescription,
       create_date: new Date(state.editedDate).toISOString(),
     };
     onUpdate(type, id, updatedItem);
-    dispatch({ type: actionTypes.TOGGLE_EDIT });
+    dispatch({ type: "TOGGLE_EDIT" });
   };
 
   const handleDelete = () => {
     onDelete(type, id);
-    dispatch({ type: actionTypes.TOGGLE_MODAL });
+    dispatch({ type: "TOGGLE_MODAL" });
   };
 
   return (
@@ -58,9 +73,9 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
             <input
               type="number"
               value={state.editedAmount}
-              onChange={(e) =>
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 dispatch({
-                  type: actionTypes.UPDATE_FIELD,
+                  type: "UPDATE_FIELD",
                   field: "editedAmount",
                   value: e.target.value,
                 })
@@ -71,9 +86,9 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
             <input
               type="text"
               value={state.editedDescription}
-              onChange={(e) =>
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 dispatch({
-                  type: actionTypes.UPDATE_FIELD,
+                  type: "UPDATE_FIELD",
                   field: "editedDescription",
                   value: e.target.value,
                 })
@@ -84,9 +99,9 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
             <input
               type="date"
               value={state.editedDate}
-              onChange={(e) =>
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 dispatch({
-                  type: actionTypes.UPDATE_FIELD,
+                  type: "UPDATE_FIELD",
                   field: "editedDate",
                   value: e.target.value,
                 })
@@ -96,7 +111,7 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
           </div>
           <div className="button-container">
             <button
-              onClick={() => dispatch({ type: actionTypes.TOGGLE_EDIT })}
+              onClick={() => dispatch({ type: "TOGGLE_EDIT" })}
               className="cancel-button"
             >
               Zrušit
@@ -125,13 +140,13 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
           </div>
           <div className="button-container">
             <button
-              onClick={() => dispatch({ type: actionTypes.TOGGLE_EDIT })}
+              onClick={() => dispatch({ type: "TOGGLE_EDIT" })}
               className="edit-button"
             >
               <FaPen className="edit-icon" />
             </button>
             <button
-              onClick={() => dispatch({ type: actionTypes.TOGGLE_MODAL })}
+              onClick={() => dispatch({ type: "TOGGLE_MODAL" })}
               className="delete-button"
             >
               <MdDelete className="delete-icon" />
@@ -141,7 +156,7 @@ const ListItem = ({ item, type, onUpdate, onDelete }) => {
                 <p>Opravdu chcete smazat tuto položku?</p>
                 <div className="modal-buttons">
                   <button
-                    onClick={() => dispatch({ type: actionTypes.TOGGLE_MODAL })}
+                    onClick={() => dispatch({ type: "TOGGLE_MODAL" })}
                     className="modal-cancel"
                   >
                     Zrušit

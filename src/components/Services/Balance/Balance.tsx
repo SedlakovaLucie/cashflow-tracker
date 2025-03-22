@@ -1,6 +1,7 @@
-import "./Balance.css"
+import "./Balance.css";
+import { BalanceProps } from "../../../types";
 
-const Balance = ({ balance, totalExpenses, totalIncomes }) => {
+const Balance: React.FC<BalanceProps> = ({ balance, totalExpenses, totalIncomes }) => {
   const isNegative = balance < 0;
 
   return (

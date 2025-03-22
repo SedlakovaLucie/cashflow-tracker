@@ -1,7 +1,7 @@
 import "./Error.css";
 import { Link } from "react-router-dom";
 
-const Error = () => {
+const Error: React.FC = () => {
   return (
     <div className="error-container">
       <h1>Stránka nenalezena</h1>
