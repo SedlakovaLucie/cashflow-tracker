@@ -25,7 +25,5 @@ npm install
 # Spusťte aplikaci
 npm start
 ```
-## Screenshots
+## Screenshot
 <img width="1304" alt="desktop" src="./screenshots/desktop.png">
-<img width="359" alt="mobile" src="./screenshots/mobile.png">
-
