@@ -11,7 +11,7 @@ const Footer = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Lucie Sedláková
+          Lucie Jagošová
         </a>
       </p>
     </div>
