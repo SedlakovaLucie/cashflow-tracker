@@ -10,6 +10,7 @@ import { db } from "../../config/firebase";
 import {
   NewTransaction,
   TransactionFromFirestore,
+  TransactionType
 } from "../../types";
 
 // Načtení příjmů
@@ -44,7 +45,7 @@ export const getExpenses = async (): Promise<TransactionFromFirestore[]> => {
 
 // Přidání záznamu
 export const addData = async (
-  collectionName: "income" | "expense",
+  collectionName: TransactionType,
   newData: NewTransaction
 ): Promise<void> => {
   try {
@@ -58,7 +59,7 @@ export const addData = async (
 
 // Aktualizace záznamu
 export const updateData = async (
-  collectionName: "income" | "expense",
+  collectionName: TransactionType,
   docId: string,
   updatedData: NewTransaction
 ): Promise<void> => {
@@ -73,7 +74,7 @@ export const updateData = async (
 
 // Mazání záznamu
 export const deleteData = async (
-  collectionName: "income" | "expense",
+  collectionName: TransactionType,
   docId: string
 ): Promise<void> => {
   try {

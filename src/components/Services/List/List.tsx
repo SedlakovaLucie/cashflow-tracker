@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ListItem from "./ListItem";
 import "./List.css";
 import { PiEmptyBold } from "react-icons/pi";
-import {Transaction, NewTransaction, ListProps} from "../../../types"
+import { ListProps } from "../../../types";
 
 const ITEMS_PER_PAGE = 10;
 

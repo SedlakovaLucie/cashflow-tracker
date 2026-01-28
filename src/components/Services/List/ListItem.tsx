@@ -2,7 +2,7 @@ import { useReducer, ChangeEvent } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
 import "./ListItem.css";
-import {Transaction, NewTransaction, ListItemProps} from "../../../types"
+import { NewTransaction, ListItemProps} from "../../../types"
 
 type State = {
   isEditing: boolean;

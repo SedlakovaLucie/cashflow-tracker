@@ -1,10 +1,12 @@
 //  Transakce
+export type TransactionType = "expense" | "income";
+
 export type Transaction = {
     id: string;
     amount: number;
     description: string;
     create_date: string;
-    type: "expense" | "income";
+    type: TransactionType;
   };
   
   export type NewTransaction = {
@@ -42,28 +44,28 @@ export type Transaction = {
   };
   
   export type FormProps = {
-    onAdd: (type: "expense" | "income", item: NewTransaction) => void;
+    onAdd: (type: TransactionType, item: NewTransaction) => void;
   };
   
   export type ListProps = {
     items: Transaction[];
     onUpdate: (
-      type: "expense" | "income",
+      type: TransactionType,
       id: string,
       item: NewTransaction
     ) => void;
-    onDelete: (type: "expense" | "income", id: string) => void;
+    onDelete: (type: TransactionType, id: string) => void;
   };
   
   export type ListItemProps = {
     item: Transaction;
-    type: "expense" | "income";
+    type: TransactionType;
     onUpdate: (
-      type: "expense" | "income",
+      type: TransactionType,
       id: string,
       item: NewTransaction
     ) => void;
-    onDelete: (type: "expense" | "income", id: string) => void;
+    onDelete: (type: TransactionType, id: string) => void;
   };
   
   // Formulář (reducer)
@@ -83,4 +85,3 @@ export type Transaction = {
     | { type: "UPDATE_FIELD"; field: keyof FormState; value: string }
     | { type: "SET_ERRORS"; errors: FormState["errors"] }
     | { type: "RESET_FORM" };
-  
